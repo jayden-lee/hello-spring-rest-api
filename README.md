@@ -1,6 +1,18 @@
 # Spring REST API Study Repo
 > 인프런 스프링 기반 REST API 개발 강좌를 학습하고 정리한 내용입니다
 
+## Prerequisites
+- Installing Java 11 and MySQL 5.7
+
+## Dependencies List
+1. Web
+2. JPA
+3. HATEOAS
+4. REST Docs
+5. H2
+6. MySQL
+7. Lombok
+
 ## REST (REpresentational State Transfer)
 > REST API 학습 관련하여 참고하면 좋은 영상 [그런 REST API로 괜찮은가](https://www.youtube.com/watch?v=RP_f5dMoHFc)
 
