@@ -3,9 +3,9 @@ package com.jayden.tutorial.springrestapi.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayden.tutorial.springrestapi.events.Event;
 import com.jayden.tutorial.springrestapi.events.EventRepository;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,6 +39,7 @@ public class EventControllerTest {
     @Test
     public void createEvent() throws Exception {
         Event event = Event.builder()
+                .id(1L)
                 .name("Spring")
                 .description("REST API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2019, 10, 1, 0, 0, 0))
@@ -47,10 +50,11 @@ public class EventControllerTest {
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("마곡역 이매너스")
+                .free(false)
+                .offline(true)
                 .build();
 
-        event.setId(1L);
-        Mockito.when(eventRepository.save(event)).thenReturn(event);
+        when(eventRepository.save(any(Event.class))).thenReturn(event);
 
         mockMvc.perform(post("/api/events/")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -60,7 +64,8 @@ public class EventControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE));
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
+                .andExpect(jsonPath("free").value(Matchers.not(true)));
     }
 
 }
