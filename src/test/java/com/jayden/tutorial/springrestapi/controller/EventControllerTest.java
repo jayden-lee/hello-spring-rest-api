@@ -2,7 +2,6 @@ package com.jayden.tutorial.springrestapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayden.tutorial.springrestapi.TestDescription;
-import com.jayden.tutorial.springrestapi.events.Event;
 import com.jayden.tutorial.springrestapi.events.EventDto;
 import com.jayden.tutorial.springrestapi.events.EventRepository;
 import org.hamcrest.Matchers;
@@ -40,8 +39,7 @@ public class EventControllerTest {
     @Test
     @TestDescription("정상적으로 이벤트를 생성하는 테스트")
     public void createEvent() throws Exception {
-        Event event = Event.builder()
-                .id(1L)
+        EventDto eventDto = EventDto.builder()
                 .name("Spring")
                 .description("REST API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2019, 10, 1, 0, 0, 0))
@@ -52,20 +50,19 @@ public class EventControllerTest {
                 .maxPrice(200)
                 .limitOfEnrollment(100)
                 .location("마곡역 이매너스")
-                .free(false)
-                .offline(true)
                 .build();
 
         mockMvc.perform(post("/api/events/")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaTypes.HAL_JSON)
-                .content(objectMapper.writeValueAsString(event)))
+                .content(objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("free").value(Matchers.not(true)));
+                .andExpect(jsonPath("free").value(Matchers.not(false)))
+                .andExpect(jsonPath("offline").value(Matchers.not(true)));
     }
 
     @Test
