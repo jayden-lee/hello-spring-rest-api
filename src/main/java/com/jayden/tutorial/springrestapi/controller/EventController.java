@@ -1,11 +1,9 @@
 package com.jayden.tutorial.springrestapi.controller;
 
-import com.jayden.tutorial.springrestapi.events.Event;
-import com.jayden.tutorial.springrestapi.events.EventDto;
-import com.jayden.tutorial.springrestapi.events.EventRepository;
-import com.jayden.tutorial.springrestapi.events.EventValidator;
+import com.jayden.tutorial.springrestapi.events.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,8 +49,11 @@ public class EventController {
 
         Event newEvent = eventRepository.save(event);
 
-        URI createdUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
-
-        return ResponseEntity.created(createdUri).body(newEvent);
+        ControllerLinkBuilder selfLinkBuilder = linkTo(EventController.class).slash(newEvent.getId());
+        URI createdUri = selfLinkBuilder.toUri();
+        EventResource eventResource = new EventResource(newEvent);
+        eventResource.add(linkTo(EventController.class).withRel("query-events"));
+        eventResource.add(selfLinkBuilder.withRel("update-event"));
+        return ResponseEntity.created(createdUri).body(eventResource);
     }
 }
