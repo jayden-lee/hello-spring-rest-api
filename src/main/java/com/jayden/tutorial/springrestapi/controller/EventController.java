@@ -37,7 +37,6 @@ public class EventController {
         if (errors.hasErrors()) {
             return ResponseEntity.badRequest().body(errors);
         }
-
         eventValidator.validate(eventDto, errors);
 
         if (errors.hasErrors()) {

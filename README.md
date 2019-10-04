@@ -68,3 +68,39 @@ Content-Type: text/html
 - 클라이언트와 서버가 각각 독립적으로 진화한다
 - **서버의 기능이 변경되어도 클라이언트를 업데이트할 필요가 없다**
 - REST를 만들게 된 계기
+
+## [Spring REST Docs](https://docs.spring.io/spring-restdocs/docs/2.0.3.RELEASE/reference/html5/)
+Spring MVC 테스트 코드를 기반으로 RESTful 서비스를 문서화 하는데 돕는 도구이다. 기본적으로 Asciidoctor를 사용하여
+HTML 문서를 생성한다.
+
+### Spring REST Docs 자동 설정
+```
+@AutoConfigureRestDocs
+```
+
+### 요청과 응답 포맷팅 설정
+<code>RestDocsMockMvcConfigurationCustomizer</code> 빈을 생성한다.
+```java
+@TestConfiguration
+public class RestDocsConfiguration {
+
+    @Bean
+    public RestDocsMockMvcConfigurationCustomizer restDocsMockMvcConfigurationCustomizer() {
+        return configurer -> configurer.operationPreprocessors()
+            .withRequestDefaults(prettyPrint())
+            .withResponseDefaults(prettyPrint());
+    }
+}
+```
+
+테스트 클래스 위에 Import 어노테이션을 선언하고 <code>RestDocsConfiguration</code> 클래스를 설정한다.
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc // Mock Mvc 자동 설정
+@AutoConfigureRestDocs // Rest Docs 자동 설정
+@Import(RestDocsConfiguration.class) // 특정 Configuration 클래스를 포함
+public class EventControllerTest {
+}
+```
