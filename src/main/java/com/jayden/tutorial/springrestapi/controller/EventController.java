@@ -3,15 +3,17 @@ package com.jayden.tutorial.springrestapi.controller;
 import com.jayden.tutorial.springrestapi.common.ErrorResource;
 import com.jayden.tutorial.springrestapi.events.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -61,5 +63,13 @@ public class EventController {
 
     private ResponseEntity<ErrorResource> badRequest(Errors errors) {
         return ResponseEntity.badRequest().body(new ErrorResource(errors));
+    }
+
+    @GetMapping
+    public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler) {
+        Page<Event> page = this.eventRepository.findAll(pageable);
+        PagedResources<Resource<Event>> pagedResources = assembler.toResource(page, e -> new EventResource(e));
+        pagedResources.add(new Link("/docs/index.html#resources-events-list").withRel("profile"));
+        return ResponseEntity.ok(pagedResources);
     }
 }
