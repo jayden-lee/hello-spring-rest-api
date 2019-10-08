@@ -1,5 +1,6 @@
 package com.jayden.tutorial.springrestapi.domain.event;
 
+import com.jayden.tutorial.springrestapi.domain.account.Account;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,6 +45,9 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
+
+    @ManyToOne
+    private Account manager;
 
     public void update() {
         if (this.basePrice == 0 && this.maxPrice == 0) {
