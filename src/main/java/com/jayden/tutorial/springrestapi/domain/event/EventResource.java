@@ -1,4 +1,4 @@
-package com.jayden.tutorial.springrestapi.events;
+package com.jayden.tutorial.springrestapi.domain.event;
 
 import com.jayden.tutorial.springrestapi.controller.EventController;
 import org.springframework.hateoas.Link;

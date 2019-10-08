@@ -1,10 +1,10 @@
 package com.jayden.tutorial.springrestapi.controller;
 
 import com.jayden.tutorial.springrestapi.common.TestDescription;
-import com.jayden.tutorial.springrestapi.events.Event;
-import com.jayden.tutorial.springrestapi.events.EventDto;
-import com.jayden.tutorial.springrestapi.events.EventRepository;
-import com.jayden.tutorial.springrestapi.events.EventStatus;
+import com.jayden.tutorial.springrestapi.domain.event.Event;
+import com.jayden.tutorial.springrestapi.domain.event.EventDto;
+import com.jayden.tutorial.springrestapi.domain.event.infra.EventRepository;
+import com.jayden.tutorial.springrestapi.domain.event.EventStatus;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.MediaTypes;

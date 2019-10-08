@@ -1,6 +1,7 @@
 package com.jayden.tutorial.springrestapi.events;
 
 import com.jayden.tutorial.springrestapi.common.TestDescription;
+import com.jayden.tutorial.springrestapi.domain.event.Event;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;

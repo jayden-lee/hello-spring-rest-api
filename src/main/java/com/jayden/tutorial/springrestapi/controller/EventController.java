@@ -1,7 +1,8 @@
 package com.jayden.tutorial.springrestapi.controller;
 
 import com.jayden.tutorial.springrestapi.common.ErrorResource;
-import com.jayden.tutorial.springrestapi.events.*;
+import com.jayden.tutorial.springrestapi.domain.event.*;
+import com.jayden.tutorial.springrestapi.domain.event.infra.EventRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

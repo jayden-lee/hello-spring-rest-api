@@ -1,4 +1,4 @@
-package com.jayden.tutorial.springrestapi.events;
+package com.jayden.tutorial.springrestapi.domain.event;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
