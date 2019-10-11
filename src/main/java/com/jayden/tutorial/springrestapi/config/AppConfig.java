@@ -1,5 +1,6 @@
 package com.jayden.tutorial.springrestapi.config;
 
+import com.jayden.tutorial.springrestapi.common.AppProperties;
 import com.jayden.tutorial.springrestapi.domain.account.Account;
 import com.jayden.tutorial.springrestapi.domain.account.AccountRole;
 import com.jayden.tutorial.springrestapi.domain.account.AccountService;
@@ -34,14 +35,24 @@ public class AppConfig {
             @Autowired
             AccountService accountService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
             public void run(ApplicationArguments args) throws Exception {
-                Account account = Account.builder()
-                        .email("jayden@chequer.io")
-                        .password("1234")
-                        .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
-                        .build();
-                this.accountService.saveAccount(account);
+                Account admin = Account.builder()
+                    .email(appProperties.getAdminUsername())
+                    .password(appProperties.getAdminPassword())
+                    .roles(Set.of(AccountRole.ADMIN, AccountRole.USER))
+                    .build();
+                this.accountService.saveAccount(admin);
+
+                Account user = Account.builder()
+                    .email(appProperties.getUserUsername())
+                    .password(appProperties.getUserPassword())
+                    .roles(Set.of(AccountRole.USER))
+                    .build();
+                this.accountService.saveAccount(user);
             }
         };
     }
