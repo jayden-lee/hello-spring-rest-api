@@ -1,6 +1,8 @@
 package com.jayden.tutorial.springrestapi.domain.event;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.jayden.tutorial.springrestapi.domain.account.Account;
+import com.jayden.tutorial.springrestapi.domain.account.AccountSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -47,6 +49,7 @@ public class Event {
     private EventStatus eventStatus;
 
     @ManyToOne
+    @JsonSerialize(using = AccountSerializer.class)
     private Account manager;
 
     public void update() {
